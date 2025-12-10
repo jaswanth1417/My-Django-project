@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="detail-container">
+
+  <div class="detail-image-wrap">
+    {% if product.image %}
+      <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    {% endif %}
+  </div>
+
+  <div class="detail-info">
+    <span class="badge">{{ product.get_category_display }}</span>
+
+    <h2>{{ product.name }}</h2>
+    <p class="price">₹{{ product.price }}</p>
+
+    {% if size_variants %}
+      <p><strong>Available Sizes & Stock:</strong></p>
+      <div class="size-stock-list">
+        {% for sv in size_variants %}
+          <span class="size-chip">
+            {{ sv.size }} <small>({{ sv.stock }} pcs)</small>
+          </span>
+        {% endfor %}
+      </div>
+    {% elif product.sizes %}
+      <p><strong>Available Sizes:</strong> {{ product.sizes }}</p>
+    {% endif %}
+
+    {% if product.description %}
+      <p style="margin-top:8px;">{{ product.description }}</p>
+    {% endif %}
+
+    <!-- Quantity selector (front-end only for now) -->
+    <div class="qty-row">
+      <span>Quantity:</span>
+      <div class="qty-control">
+        <button type="button" onclick="changeQty(-1)">−</button>
+        <input type="text" id="qty-input" value="1" readonly>
+        <button type="button" onclick="changeQty(1)">+</button>
+      </div>
+    </div>
+
+    <!-- WhatsApp order button -->
+    <a
+      class="whatsapp-btn"
+      href="https://wa.me/917794071417?text=Hi,%20I%20want%20to%20order%20{{ product.name }}%20(₹{{ product.price }})%20Qty:%20{QTY}%20from%20Decode%20Fashions."
+      id="wa-link"
+      target="_blank">
+      Order on WhatsApp
+    </a>
+  </div>
+
+</div>
+
+<script>
+  function changeQty(delta) {
+    const input = document.getElementById('qty-input');
+    let val = parseInt(input.value || '1');
+    val = val + delta;
+    if (val < 1) val = 1;
+    if (val > 10) val = 10; // max 10 per order for now
+    input.value = val;
+
+    // Update WhatsApp link with quantity
+    const link = document.getElementById('wa-link');
+    const url = link.getAttribute('href');
+    const newUrl = url.replace(/Qty:%20(\d+)/, 'Qty:%20' + val);
+    link.setAttribute('href', newUrl);
+  }
+
+  // set default qty in link
+  changeQty(0);
+</script>
+
+{% endblock %}

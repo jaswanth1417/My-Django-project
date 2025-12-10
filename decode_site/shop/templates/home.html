@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- 🔹 OFFLINE STORE BANNER WITH SCROLL + SEARCH -->
+<div class="offline-banner">
+  <div class="scroll-text">
+    <span class="pill">OFFLINE STORE</span>
+    Decode Fashions – Anakapalle store opening soon!.. Stay stuned for further updates & offers 
+  </div>
+
+  <form method="get"
+        action="{% url 'product_list' %}"
+        class="banner-search">
+    <input type="text" name="q" placeholder="Search…" />
+    <button type="submit">🔍</button>
+  </form>
+</div>
+
+<!-- 🔹 HERO SLIDER -->
+<div class="hero-slider">
+  <div class="hero-slide s1 active">
+    <div class="slide-text">
+      <h2>Decode Fashions</h2>
+      <p>Premium Menswear Collections.</p>
+      <a class="button" href="{% url 'product_list' %}">Shop Now</a>
+    </div>
+  </div>
+
+  <div class="hero-slide s2">
+    <div class="slide-text">
+      <h2>New Arrivals</h2>
+      <p>Fresh drops for this season.</p>
+      <a class="button" href="{% url 'product_list' %}?category=jeans">View Jeans</a>
+    </div>
+  </div>
+
+  <div class="hero-slide s3">
+    <div class="slide-text">
+      <h2>Street Style</h2>
+      <p>Oversize Tees, Denims & Jackets.</p>
+      <a class="button" href="{% url 'product_list' %}?category=tshirt">View T-Shirts</a>
+    </div>
+  </div>
+</div>
+
+<!-- 🔹 NEW ARRIVALS -->
+<h2>New Arrivals 🔥</h2>
+<div class="product-grid">
+  {% for p in latest %}
+  <div class="product-card">
+   <a href="{% url 'product_detail' p.pk %}">
+  {% if p.image %}
+    <img src="{{ p.image.url }}" alt="{{ p.name }}">
+  {% endif %}
+  <h3>{{ p.name }}</h3>
+</a>
+<p class="price">₹{{ p.price }}</p>
+<a class="button" href="{% url 'product_detail' p.pk %}">View</a>
+  </div>
+  {% empty %}
+  <p>No products yet.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

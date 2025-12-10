@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Products</h2>
+
+<div class="top-bar">
+  <div class="filter-bar">
+    <a href="{% url 'product_list' %}" class="filter-btn">All</a>
+    <a href="?category=jeans" class="filter-btn">Jeans</a>
+    <a href="?category=shirt" class="filter-btn">Shirts</a>
+    <a href="?category=tshirt" class="filter-btn">T-Shirts</a>
+    <a href="?category=jacket" class="filter-btn">Jackets</a>
+    <a href="?category=shoes" class="filter-btn">Shoes</a>
+  </div>
+
+  <form method="get" class="search-form">
+    <input type="text" name="q" placeholder="Search products..." value="{{ request.GET.q }}">
+    <button type="submit">Search</button>
+  </form>
+</div>
+
+<div class="product-grid">
+  {% for p in products %}
+  <div class="product-card">
+  <a href="{% url 'product_detail' p.pk %}">
+    {% if p.image %}
+      <img src="{{ p.image.url }}" alt="{{ p.name }}">
+    {% endif %}
+    <h3>{{ p.name }}</h3>
+  </a>
+  <p class="price">₹{{ p.price }}</p>
+  <a class="button" href="{% url 'product_detail' p.pk %}">View</a>
+</div>
+  {% empty %}
+  <p>No products found.</p>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decode Fashions</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+<header>
+  <div class="brand-logo">
+    <span class="logo-main">DECODE</span>
+    <span class="logo-sub">FASHIONS</span>
+  </div>
+  <nav>
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'product_list' %}?category=jeans">Jeans</a>
+    <a href="{% url 'product_list' %}?category=shirt">Shirts</a>
+    <a href="{% url 'product_list' %}?category=tshirt">T-Shirts</a>
+    <a href="{% url 'product_list' %}?category=jacket">Jackets</a>
+    <a href="{% url 'product_list' %}?category=shoes">Shoes</a>
+    <a href="{% url 'contact' %}">Contact</a>
+  </nav>
+</header>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const slides = document.querySelectorAll('.hero-slide');
+  if (!slides.length) return;
+
+  let index = 0;
+
+  function showSlide(i) {
+    slides.forEach((slide, idx) => {
+      if (idx === i) {
+        slide.classList.add('active');
+      } else {
+        slide.classList.remove('active');
+      }
+    });
+  }
+
+  function nextSlide() {
+    index = (index + 1) % slides.length;
+    showSlide(index);
+  }
+
+  // show first slide
+  showSlide(index);
+
+  // change every 4 seconds
+  setInterval(nextSlide, 4000);
+});
+</script>
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<footer>
+  <p>© Decode Fashions — Anakapalle</p>
+</footer>
+
+</body>
+</html>
