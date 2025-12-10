@@ -1,1 +1,1 @@
-web: gunicorn decode_site.wsgi
+web: gunicorn decode_site.wsgi:application --bind 0.0.0.0:$PORT
